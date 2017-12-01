@@ -515,6 +515,18 @@ void gsc_mysql_fetch_row()
 	}
 }
 
+void gsc_mysql_insert_id()
+{
+	int mysql;
+	if (!stackGetParams("i", &mysql)) {
+		printf("scriptengine> wrongs args for mysql_insert_id(mysql);\n");
+		stackPushUndefined();
+		return;
+	}
+	int result = mysql_insert_id((MYSQL *)mysql);
+	stackPushInt(result);
+}
+
 void gsc_mysql_free_result()
 {
 	int result;

@@ -129,6 +129,7 @@ scr_function_t scriptFunctions[] =
 	{"mysql_field_seek", gsc_mysql_field_seek, 0},
 	{"mysql_fetch_field", gsc_mysql_fetch_field, 0},
 	{"mysql_fetch_row", gsc_mysql_fetch_row, 0},
+	{"mysql_insert_id", gsc_mysql_insert_id, 0},
 	{"mysql_free_result", gsc_mysql_free_result, 0},
 	{"mysql_real_escape_string", gsc_mysql_real_escape_string, 0},
 	{"mysql_async_create_query", gsc_mysql_async_create_query, 0},

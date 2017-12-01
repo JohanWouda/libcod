@@ -17,6 +17,7 @@ void gsc_mysql_num_fields();
 void gsc_mysql_field_seek();
 void gsc_mysql_fetch_field();
 void gsc_mysql_fetch_row();
+void gsc_mysql_insert_id();
 void gsc_mysql_free_result();
 void gsc_mysql_real_escape_string();
 void gsc_mysql_async_create_query();
