@@ -258,7 +258,16 @@ void gsc_mysql_async_initializer()//returns array with mysql connection handlers
 	if(first_async_connection != NULL)
 	{
 		Com_DPrintf("gsc_mysql_async_initializer() async mysql already initialized. Returning before adding additional connections\n");
-		stackPushUndefined();
+		
+		// Return the MySQL connections
+		stackPushArray();
+		mysql_async_connection *c = first_async_connection;
+		while(c != NULL)
+		{
+			stackPushInt((int)c->connection);
+			stackPushArrayLast();			
+			c = c->next;
+		}		
 		return;
 	}
 	if(pthread_mutex_init(&lock_async_mysql, NULL) != 0)
