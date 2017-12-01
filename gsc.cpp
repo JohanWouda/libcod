@@ -321,6 +321,7 @@ scr_method_t scriptMethods[] =
 	{"getPing", gsc_player_getping, 0},
 	{"getSpectatorClient", gsc_player_spectatorclient_get, 0},
 	{"ClientCommand", gsc_player_ClientCommand, 0},
+	{"resetClientCommand", gsc_player_resetClientCommand, 0},	
 	{"getLastConnectTime", gsc_player_getLastConnectTime, 0},
 	{"getLastMSG", gsc_player_getLastMSG, 0},
 	{"getAddressType", gsc_player_addresstype, 0},

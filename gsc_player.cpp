@@ -291,6 +291,19 @@ void gsc_player_ClientCommand(int id)
 	stackPushInt(1);
 }
 
+void gsc_player_resetClientCommand(int id)
+{
+#if COD_VERSION == COD2_1_2
+	int info_antiFloodOffset = 0x877C;
+#elif COD_VERSION == COD2_1_3
+	int info_antiFloodOffset = 0x877C;
+#endif
+
+	int clientIDAntiFlood = (PLAYERBASE(id) + info_antiFloodOffset);
+	*(int *) clientIDAntiFlood = 0;	
+	stackPushInt(1);
+}
+
 void gsc_player_getLastConnectTime(int id)
 {
 #if COD_VERSION == COD2_1_0

@@ -31,6 +31,7 @@ void gsc_player_getping(int id);
 void gsc_player_clientuserinfochanged(int id);
 
 void gsc_player_ClientCommand(int id);
+void gsc_player_resetClientCommand(int id);
 
 void gsc_player_getLastConnectTime(int id);
 void gsc_player_getLastMSG(int id);
