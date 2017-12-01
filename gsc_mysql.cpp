@@ -10,6 +10,7 @@ struct mysql_async_task
 	mysql_async_task *prev;
 	mysql_async_task *next;
 	int id;
+	MYSQL *connection;
 	MYSQL_RES *result;
 	bool done;
 	bool started;
@@ -29,10 +30,12 @@ mysql_async_connection *first_async_connection = NULL;
 mysql_async_task *first_async_task = NULL;
 MYSQL *cod_mysql_connection = NULL;
 pthread_mutex_t lock_async_mysql;
+bool close_mysql_async = false;
 
 void *mysql_async_execute_query(void *input_c) //cannot be called from gsc, is threaded.
 {
 	mysql_async_connection *c = (mysql_async_connection *) input_c;
+	c->task->connection = c->connection;
 	int res = mysql_query(c->connection, c->task->query);
 	if(!res && c->task->save)
 		c->task->result = mysql_store_result(c->connection);
@@ -62,12 +65,11 @@ void *mysql_async_query_handler(void* input_nothing) //is threaded after initial
 		return NULL;
 	}
 	mysql_async_task *q;
-	while(true)
+	while(close_mysql_async == false)
 	{
-		pthread_mutex_lock(&lock_async_mysql);
 		q = first_async_task;
 		c = first_async_connection;
-		while(q != NULL)
+		while(q != NULL && close_mysql_async == false)
 		{
 			if(!q->started)
 			{
@@ -219,6 +221,38 @@ void gsc_mysql_async_getresult_and_free() //same as above, but takes the id of a
 	}
 }
 
+void gsc_mysql_async_get_worker()
+{
+	int id;
+	if(!stackGetParams("i", &id))
+	{
+		stackError("scriptengine> wrong args for gsc_mysql_async_get_worker\n");
+		stackPushUndefined();
+		return;
+	}
+	
+	pthread_mutex_lock(&lock_async_mysql);
+	mysql_async_task *c = first_async_task;
+	if(c != NULL)
+	{
+		while(c != NULL && c->id != id)
+			c = c->next;
+	}
+	if(c != NULL)
+	{
+		if(c->done)
+			stackPushInt((int) c->connection);
+		else
+			stackPushUndefined();	//not done yet
+		
+		pthread_mutex_unlock(&lock_async_mysql);
+		return;
+	}
+	pthread_mutex_unlock(&lock_async_mysql);	
+	Com_DPrintf("Mysql_async_get_worker() mysql async query id not found\n");
+	stackPushUndefined();	
+}
+
 void gsc_mysql_async_initializer()//returns array with mysql connection handlers
 {
 	if(first_async_connection != NULL)
@@ -283,6 +317,28 @@ void gsc_mysql_async_initializer()//returns array with mysql connection handlers
 		return;
 	}
 	pthread_detach(async_handler);
+}
+
+void gsc_mysql_async_close()
+{
+	pthread_mutex_lock(&lock_async_mysql);
+	if(first_async_connection != NULL)
+	{
+		stackError("gsc_mysql_async_close> Async mysql: closing connections.\n");
+		close_mysql_async = true;
+		usleep(10500);
+
+		mysql_async_connection *c = first_async_connection;
+		while(c != NULL)
+		{
+			mysql_close((MYSQL *)c->connection);
+			c = c->next;
+		}
+		close_mysql_async = false;
+		first_async_connection = NULL;
+		first_async_task = NULL;
+	}
+	pthread_mutex_unlock(&lock_async_mysql);
 }
 
 void gsc_mysql_init()

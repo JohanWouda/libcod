@@ -138,6 +138,8 @@ scr_function_t scriptFunctions[] =
 	{"mysql_async_getresult_and_free", gsc_mysql_async_getresult_and_free, 0},
 	{"mysql_async_initializer", gsc_mysql_async_initializer, 0},
 	{"mysql_reuse_connection", gsc_mysql_reuse_connection, 0},
+	{"mysql_async_getWorker"  , gsc_mysql_async_get_worker  , 0},
+	{"mysql_async_close"      , gsc_mysql_async_close  , 0},
 #endif
 
 #if COMPILE_MYSQL_VORON == 1

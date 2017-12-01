@@ -26,5 +26,7 @@ void gsc_mysql_async_getdone_list();
 void gsc_mysql_async_getresult_and_free();
 void gsc_mysql_async_initializer();
 void gsc_mysql_reuse_connection();
+void gsc_mysql_async_get_worker();
+void gsc_mysql_async_close();
 
 #endif
