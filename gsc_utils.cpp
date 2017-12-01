@@ -184,6 +184,12 @@ void gsc_utils_printf()
 	stackPushInt(1);
 }
 
+void gsc_utils_printfline()
+{
+	gsc_utils_printf();
+	printf("\n");
+}
+
 void gsc_utils_sprintf()
 {
 	char result[COD2_MAX_STRINGLENGTH];
@@ -247,6 +253,21 @@ void gsc_utils_sprintf()
 	stackPushString(result);
 }
 
+void gsc_utils_sprintFFloat()
+{
+	char *string;
+	float data;
+	if ( ! stackGetParams("sf", &string, &data))
+	{
+		stackError("gsc_utils_sprintFFloat() argument is undefined or has a wrong type");
+		stackPushUndefined();
+		return;
+	}
+	char buffer [256];
+	sprintf(buffer, string, data);
+	stackPushString(buffer);
+}
+
 void gsc_utils_getAscii()
 {
 	char *str;
@@ -257,6 +278,19 @@ void gsc_utils_getAscii()
 		return;
 	}
 	stackPushInt(str[0]);
+}
+
+void gsc_utils_getChar()
+{
+	int asciiNumber;
+	if ( ! stackGetParams("i", &asciiNumber))
+	{
+		stackError("gsc_utils_getChar() argument is undefined or has a wrong type");
+		stackPushUndefined();
+		return;
+	}
+	char *asciiValue = (char *)&asciiNumber;
+	stackPushString(asciiValue);
 }
 
 void gsc_utils_toupper()
@@ -336,6 +370,27 @@ void gsc_utils_getlocaltime()
 	stripped_time[strlen(timestring) - 1] = '\0';
 
 	stackPushString( stripped_time );
+}
+
+void gsc_utils_formatTime()
+{
+	int unixTime;
+	char *format;
+	if ( ! stackGetParams("is", &unixTime, &format))
+	{
+		stackError("gsc_utils_formatTime() argument is undefined or has a wrong type");
+		stackPushUndefined();
+		return;
+	}
+	time_t time;
+	struct tm * timeinfo;
+	char buffer [256];
+
+	time = (time_t)unixTime;
+	timeinfo = localtime(&time);
+
+	strftime (buffer, sizeof(buffer), format, timeinfo);
+	stackPushString(buffer);
 }
 
 void gsc_utils_exponent()

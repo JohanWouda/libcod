@@ -5,8 +5,10 @@
 #include "gsc.hpp"
 
 void gsc_utils_printf();
+void gsc_utils_printfline();
 void gsc_utils_getarraykeys();
 void gsc_utils_getAscii();
+void gsc_utils_getChar();
 void gsc_utils_toupper();
 void gsc_utils_system();
 void gsc_utils_exponent();
@@ -33,9 +35,11 @@ void gsc_utils_fwrite();
 void gsc_utils_fclose();
 void gsc_utils_fsize();
 void gsc_utils_sprintf();
+void gsc_utils_sprintFFloat();
 void gsc_utils_getsystemtime();
 void gsc_utils_getserverstarttime();
 void gsc_utils_getlocaltime();
+void gsc_utils_formatTime();
 void gsc_utils_sqrt();
 void gsc_utils_sqrtInv();
 void gsc_utils_vectorscale();

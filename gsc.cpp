@@ -189,8 +189,10 @@ scr_function_t scriptFunctions[] =
 
 #if COMPILE_UTILS == 1
 	{"printf", gsc_utils_printf, 0},
+	{"printfline", gsc_utils_printfline, 0},
 	{"getArrayKeys", gsc_utils_getarraykeys, 0},
 	{"getAscii", gsc_utils_getAscii, 0},
+	{"getChar", gsc_utils_getChar, 0},
 	{"toUpper", gsc_utils_toupper, 0},
 	{"system", gsc_utils_system, 0},
 	{"exponent", gsc_utils_exponent, 0},
@@ -210,9 +212,11 @@ scr_function_t scriptFunctions[] =
 	{"fclose", gsc_utils_fclose, 0},
 	{"fsize", gsc_utils_fsize, 0},
 	{"sprintf", gsc_utils_sprintf, 0},
-	{"getsystemtime", gsc_utils_getsystemtime, 0},
+	{"printFFloat", gsc_utils_sprintFFloat, 0},
+	{"getSystemTime", gsc_utils_getsystemtime, 0},
 	{"getserverstarttime", gsc_utils_getserverstarttime, 0},
 	{"getlocaltime", gsc_utils_getlocaltime, 0},
+	{"formatTime", gsc_utils_formatTime, 0},	
 	{"G_FindConfigstringIndex", gsc_G_FindConfigstringIndex, 0},
 	{"G_FindConfigstringIndexOriginal", gsc_G_FindConfigstringIndexOriginal, 0},
 	{"getconfigstring", gsc_get_configstring, 0},
